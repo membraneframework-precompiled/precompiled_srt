@@ -5,7 +5,7 @@ orbs:
 workflows:
   precompile:
     jobs:
-      - elixir/precompile_for_macos_intel: &parameters
+      - elixir/precompile_for_macos_arm: &parameters
           package-name: srt
           expected-version: << pipeline.git.tag >>
           filters:
@@ -13,14 +13,11 @@ workflows:
               ignore: /.*/
             tags:
               only: /v.*/
-      - elixir/precompile_for_macos_arm:
-          <<: *parameters
       - elixir/precompile_for_linux:
           <<: *parameters
       - elixir/publish_precompiled:
           requires:
             - elixir/precompile_for_macos_arm
-            - elixir/precompile_for_macos_intel
             - elixir/precompile_for_linux
           version: << pipeline.git.tag >>
           filters:
