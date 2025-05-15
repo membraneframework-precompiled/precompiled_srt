@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  elixir: membraneframework/elixir@dev:e01a5ea0de11b220b600bf1998bebabd13713f7b
-  
+  elixir: membraneframework/elixir@1.5
+
 workflows:
   precompile:
     jobs:
@@ -13,13 +13,17 @@ workflows:
               ignore: /.*/
             tags:
               only: /v.*/
-      - elixir/precompile_for_linux:
+      - elixir/precompile_for_linux_x86:
+          <<: *parameters
+      - elixir/precompile_for_linux_arm:
           <<: *parameters
       - elixir/publish_precompiled:
           requires:
             - elixir/precompile_for_macos_arm
-            - elixir/precompile_for_linux
+            - elixir/precompile_for_linux_x86
+            - elixir/precompile_for_linux_arm
           version: << pipeline.git.tag >>
+          context: publishing
           filters:
             branches:
               ignore: /.*/
