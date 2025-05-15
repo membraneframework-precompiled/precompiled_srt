@@ -1,12 +1,12 @@
 version: 2.1
 orbs:
-  elixir: membraneframework/elixir@1.4.5
+  elixir: membraneframework/elixir@1.5
   
 workflows:
   precompile:
     jobs:
       - elixir/precompile_for_macos_intel: &parameters
-          package-name: PACKAGE_NAME_HERE
+          package-name: srt
           expected-version: << pipeline.git.tag >>
           filters:
             branches:
